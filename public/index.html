@@ -19,6 +19,10 @@
       overflow: hidden;
     }
 
+    #player {
+      position: absolute;
+    }
+
     #control {
       border-radius: 50%;
       background-color: rgba(255, 255, 255, .4);
@@ -64,9 +68,14 @@
 </head>
 
 <body>
-  <div class="layer" style="background-color: #9BC53D">
+  <div class="layer" style="background-color: #338">
 
-    <div id="player"><img src="assets/adventurer_stand.png" alt=""></div>
+    <div id="background" style="position: absolute"><img src="assets/island.svg" alt=""></div>
+
+  </div>
+  <div class="layer">
+
+    <div id="player" style="left: 50%; top: 50%"><img src="assets/adventurer_stand.png" alt=""></div>
 
   </div>
   <div class="layer">
