@@ -64,18 +64,31 @@
       grid-area: left;
       transform: rotate(270deg);
     }
+
+    .objs {
+      transform: translate(-50%, -50%);
+      position: absolute;
+      width: 64px;
+      height: 64px;
+      border: 1px solid magenta;
+      border-radius: 50%;
+    }
   </style>
 </head>
 
 <body>
   <div class="layer" style="background-color: #338">
 
-    <div id="background" style="position: absolute"><img src="assets/island.svg" alt=""></div>
+    <div id="background" style="position: absolute">
+      <img src="assets/island.svg" alt="">
+      <div class="objs" style="top: 0px; left: 300px;"></div>
+      <div class="objs" style="top: 200px; left: 100px;"></div>
+    </div>
 
   </div>
-  <div class="layer">
+  <div class="layer" id="player_layer">
 
-    <div id="player" style="left: 50%; top: 50%"><img src="assets/adventurer_stand.png" alt=""></div>
+    <div id="player" style="transform: translate(-50%, -50%); border-radius: 50%; border: 1px solid; left: 50%; top: 50%"><img style="width: 64px; height: 64px" src="assets/adventurer_stand.png" alt=""></div>
 
   </div>
   <div class="layer">
