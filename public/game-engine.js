@@ -35,8 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         Math.abs(playerBoundingBox.x - objPos.x) <= 64 &&
         Math.abs(playerBoundingBox.y - objPos.y) <= 64
       ) {
-        if (obj.style.display == 'none') {
-        } else if (obj.dataset.type == 'food') {
+        if (obj.style.display == 'none') {} else if (obj.dataset.type == 'food') {
           addLife();
           obj.style.display = 'none';
         } else if (obj.dataset.type == 'tool') {
@@ -123,6 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (countDown.innerHTML == 0) {
       clearInterval(countDownLife);
       movement = null;
+
     }
   }, 5000);
 
@@ -156,6 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(life.children);
     if (life.children.length < 15) life.appendChild(newLife);
   }
+
   function reduceLife() {
     var bars = document.getElementsByClassName('lifeBar');
     var masi = bars[bars.length - 1];
