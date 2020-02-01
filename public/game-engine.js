@@ -14,8 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
   var island = document.querySelector('#background');
   var playerElement = document.querySelector('#player');
 
-  var playerLayer = document.querySelector('#player_layer');
-
   var move = function(direction) {
     var islandBoundingBox = island.getBoundingClientRect();
     var playerBoundingBox = playerElement.getBoundingClientRect();
@@ -99,56 +97,52 @@ document.addEventListener('DOMContentLoaded', function() {
       movement = 'left';
     }
   });
-  var clock = document.getElementById('clock');
-  function currentTime() {
-    var date = new Date();
-    var hour = date.getHours();
-    var min = date.getMinutes();
-    var sec = date.getSeconds();
-    var midday = 'AM';
 
-    midday = hour < 12 ? 'AM' : 'PM';
-    hour = hour == 0 ? 12 : hour > 12 ? hour - 12 : hour;
+  var countDown = document.getElementById('count');
 
-    hour = updateTime(hour);
-    console.log(hour);
-    min = updateTime(min);
-    sec = updateTime(sec);
-    console.log(clock);
-    clock.innerHTML = hour + ' : ' + min + ' : ' + sec + ' ' + midday;
-    // var t = setTimeout(currentTime, 1000);
-  }
-
-  function updateTime(k) {
-    if (k < 10) {
-      return '0' + k;
-    } else {
-      return k;
+  var countDownLife = setInterval(function count() {
+    countDown.innerHTML -= 1;
+    reduceLife();
+    if (countDown.innerHTML == 0) {
+      clearInterval(countDownLife);
+      window.stop();
     }
-  }
+  }, 5000);
 
-  currentTime();
-});
-var addToInvetory = function(element) {
-  var newInventoryElement = element.children[0].cloneNode(true);
+  var addToInvetory = function(element) {
+    var newInventoryElement = element.children[0].cloneNode(true);
+    newInventoryElement.style.width = '30px';
+    newInventoryElement.style.border = '.5px solid gray';
 
-  document.querySelector('#inventory').appendChild(newInventoryElement);
-};
-
-function addLife() {
+    document.querySelector('#inventory').appendChild(newInventoryElement);
+  };
   var life = document.getElementById('life');
-  var selectTool = document.getElementsByClassName('count')[0];
+  var message = document.querySelector('#message');
   var numLife = life.childNodes;
 
-  var newLife = document.createElement('span');
-  if (numLife.length <= 6) {
-    newLife.setAttribute('class', 'lifeBar R ');
-  } else if (numLife.length > 6 && numLife.length < 12) {
-    newLife.setAttribute('class', 'lifeBar LG ');
-  } else {
-    newLife.setAttribute('class', 'lifeBar G ');
-  }
+  function addLife() {
+    var newLife = document.createElement('span');
+    console.log(numLife);
+    if (numLife.length <= 6) {
+      newLife.setAttribute('class', 'lifeBar R ');
+      newLife.style.marginLeft = '2px';
+      var countDown = document.getElementById('count');
+      countDown.innerHTML = +countDown.innerHTML + 1;
+    } else {
+      newLife.setAttribute('class', 'lifeBar LG ');
+      newLife.style.marginLeft = '2px';
+      message.style.display = 'none';
+      var countDown = document.getElementById('count');
+      countDown.innerHTML = +countDown.innerHTML + 1;
+    }
 
-  console.log(life.children);
-  if (life.children.length < 15) life.appendChild(newLife);
-}
+    console.log(life.children);
+    if (life.children.length < 15) life.appendChild(newLife);
+  }
+  function reduceLife() {
+    var bars = document.getElementsByClassName('lifeBar');
+    var masi = bars[bars.length - 1];
+    console.log(bars[bars.length - 1]);
+    masi.remove();
+  }
+});
