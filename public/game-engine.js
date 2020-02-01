@@ -10,6 +10,9 @@ const Game = {
 document.addEventListener('DOMContentLoaded', function() {
 
   var lastTimestamp = 0;
+  var dailyCounter = 50;
+  var lastDayTime = 0;
+  var isDay = true;
 
   var movement = null;
   var island = document.querySelector('#background');
@@ -46,6 +49,9 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (obj.dataset.type == 'tool') {
           addToInvetory(obj);
           obj.style.display = 'none';
+        } else if (obj.dataset.type == 'enemy') {
+          alert('You lost one live ...');
+          obj.style.display = 'none';
         }
       } else {
         //obj.style.backgroundColor = '';
@@ -53,9 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
   };
-  var dailyCounter = 10;
-  var lastDayTime = 0;
-  var isDay = true;
 
   function step(timestamp) {
     if (timestamp - lastTimestamp > 50) {
@@ -70,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
       lastDayTime = timestamp;
       if (dailyCounter > 0) dailyCounter--;
       else {
-        dailyCounter = 10;
+        dailyCounter = 50;
         isDay = !isDay;
         changeDaylight(isDay);
       };
