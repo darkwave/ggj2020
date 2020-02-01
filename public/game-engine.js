@@ -30,9 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
       objPos = obj.getBoundingClientRect();
       console.log(
         `object ${index}: ${objPos.x} ${objPos.y}
-         playerX: ${
-          playerBoundingBox.x
-        } playerY : ${playerBoundingBox.y}`
+         playerX: ${playerBoundingBox.x} playerY : ${playerBoundingBox.y}`
       );
       if (
         Math.abs(playerBoundingBox.x - objPos.x) <= 32 &&
@@ -62,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
     move("right");
   });
 
-  document.addEventListener("keyup", function(event) {
+  document.addEventListener("keydown", function(event) {
     if (event.keyCode == 38) {
       move("top");
     } else if (event.keyCode == 40) {
