@@ -23,23 +23,20 @@ document.addEventListener("DOMContentLoaded", function() {
     var styleDirection =
       direction == "left" || direction == "right" ? "left" : "top";
     island.style[styleDirection] =
-      islandBoundingBox[axis] + 64 * increment + "px";
+      islandBoundingBox[axis] + 16 * increment + "px";
 
     var objs = document.querySelectorAll(".objs");
     objs.forEach((obj, index) => {
       objPos = obj.getBoundingClientRect();
       console.log(
-        `object ${index}: ${objPos.x} ${objPos.y} playerX: ${
+        `object ${index}: ${objPos.x} ${objPos.y}
+         playerX: ${
           playerBoundingBox.x
-        } playerY : ${playerBoundingBox.y} disX: ${Math.abs(
-          playerBoundingBox.x - objPos.x
-        )} disY: ${Math.abs(
-          playerBoundingBox.y - objPos.y
-        )} Screen X,Y: ${screenCenterX},${screenCenterY}`
+        } playerY : ${playerBoundingBox.y}`
       );
       if (
-        Math.abs(playerBoundingBox.x - objPos.x) < 32 &&
-        Math.abs(playerBoundingBox.y - objPos.y) < 32
+        Math.abs(playerBoundingBox.x - objPos.x) <= 32 &&
+        Math.abs(playerBoundingBox.y - objPos.y) <= 32
       ) {
         obj.style.backgroundColor = "red";
       } else {
