@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
   };
-  var dailyCounter = 50;
+  var dailyCounter = 10;
   var lastDayTime = 0;
   var isDay = true;
 
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
       lastDayTime = timestamp;
       if (dailyCounter > 0) dailyCounter--;
       else {
-        dailyCounter = 50;
+        dailyCounter = 10;
         isDay = !isDay;
         changeDaylight(isDay);
       };
