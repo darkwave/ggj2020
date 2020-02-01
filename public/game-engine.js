@@ -26,12 +26,12 @@ document.addEventListener('DOMContentLoaded', function() {
       islandBoundingBox[axis] + 16 * increment + 'px';
 
     var objs = document.querySelectorAll('.objs');
-    objs.forEach((obj, index) => {
+    objs.forEach(obj => {
       objPos = obj.getBoundingClientRect();
-      console.log(
-        `object ${index}: ${objPos.x} ${objPos.y}
-         playerX: ${playerBoundingBox.x} playerY : ${playerBoundingBox.y}`
-      );
+      // console.log(
+      //   `object ${index}: ${objPos.x} ${objPos.y}
+      //    playerX: ${playerBoundingBox.x} playerY : ${playerBoundingBox.y}`
+      // );
       if (
         Math.abs(playerBoundingBox.x - objPos.x) <= 32 &&
         Math.abs(playerBoundingBox.y - objPos.y) <= 32
@@ -71,8 +71,37 @@ document.addEventListener('DOMContentLoaded', function() {
       move('left');
     }
   });
-});
 
+  var clock = document.getElementById('clock');
+  function currentTime() {
+    var date = new Date();
+    var hour = date.getHours();
+    var min = date.getMinutes();
+    var sec = date.getSeconds();
+    var midday = 'AM';
+
+    midday = hour < 12 ? 'AM' : 'PM';
+    hour = hour == 0 ? 12 : hour > 12 ? hour - 12 : hour;
+
+    hour = updateTime(hour);
+    console.log(hour);
+    min = updateTime(min);
+    sec = updateTime(sec);
+    console.log(clock);
+    clock.innerHTML = hour + ' : ' + min + ' : ' + sec + ' ' + midday;
+    // var t = setTimeout(currentTime, 1000);
+  }
+
+  function updateTime(k) {
+    if (k < 10) {
+      return '0' + k;
+    } else {
+      return k;
+    }
+  }
+
+  currentTime();
+});
 function addLife() {
   var life = document.getElementById('life');
   var selectTool = document.getElementsByClassName('count')[0];
@@ -92,31 +121,3 @@ function addLife() {
   console.log(life.children);
   if (life.children.length < 15) life.appendChild(newLife);
 }
-
-var clock = document.getElementById('clock');
-function currentTime() {
-  var date = new Date();
-  var hour = date.getHours();
-  var min = date.getMinutes();
-  var sec = date.getSeconds();
-  var midday = 'AM';
-  console.log(hour);
-  midday = hour >= 12 ? 'PM' : 'AM';
-  hour = hour == 0 ? 12 : hour > 12 ? hour - 12 : hour;
-  hour = updateTime(hour);
-  min = updateTime(min);
-  sec = updateTime(sec);
-  console.log(clock);
-  clock.innerHTML = hour + ' : ' + min + ' : ' + sec + ' ' + midday;
-  // var t = setTimeout(currentTime, 1000);
-}
-
-function updateTime(k) {
-  if (k < 10) {
-    return '0' + k;
-  } else {
-    return k;
-  }
-}
-
-currentTime();

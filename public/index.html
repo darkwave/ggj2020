@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>GGJ 2020</title>
-
+    <script src="game-engine.js" charset="utf-8"></script>
     <style media="screen">
       * {
         margin: 0;
@@ -116,11 +116,13 @@
         text-shadow: hotpink;
       }
       #clock {
+        position: absolute;
         color: #66ff99;
-        font-size: 56px;
+        font-size: 36px;
         text-align: center;
-        padding-top: 40px;
-        padding-bottom: 40px;
+        /* padding-top: 40px;
+        padding-bottom: 40px; */
+        width: fit-content;
       }
     </style>
   </head>
@@ -133,6 +135,7 @@
         <div class="objs" style="top: 200px; left: 100px;"></div>
       </div>
     </div>
+
     <div class="layer" id="player_layer">
       <div
         id="player"
@@ -165,6 +168,5 @@
       </div>
     </div>
     <div id="clock"></div>
-    <script src="game-engine.js" charset="utf-8"></script>
   </body>
 </html>
