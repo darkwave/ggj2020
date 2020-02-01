@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
           obj.style.display = 'none';
         } else if (obj.dataset.type == 'enemy') {
           alert('You lost one live ...');
-          obj.style.display = 'none';
+          movement = null;
+          // obj.style.display = 'none';
         }
       } else {
         //obj.style.backgroundColor = '';
@@ -121,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
     reduceLife();
     if (countDown.innerHTML == 0) {
       clearInterval(countDownLife);
-      window.stop();
+      movement = null;
     }
   }, 5000);
 
