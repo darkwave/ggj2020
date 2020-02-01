@@ -8,14 +8,18 @@ const Game = {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
+
+  var lastTimestamp = 0;
+
+  var movement = null;
   var island = document.querySelector('#background');
   var playerElement = document.querySelector('#player');
 
   var playerLayer = document.querySelector('#player_layer');
 
-  var screenCenterX = playerLayer.getBoundingClientRect().width / 2;
-  var screenCenterY = playerLayer.getBoundingClientRect().height / 2;
+
   var move = function(direction) {
+
     var islandBoundingBox = island.getBoundingClientRect();
     var playerBoundingBox = playerElement.getBoundingClientRect();
     var increment = direction == 'bottom' || direction == 'right' ? -1 : 1;
@@ -25,60 +29,97 @@ document.addEventListener('DOMContentLoaded', function() {
     island.style[styleDirection] =
       islandBoundingBox[axis] + 16 * increment + 'px';
 
+
     var objs = document.querySelectorAll('.objs');
-    objs.forEach((obj, index) => {
+    objs.forEach((obj) => {
       objPos = obj.getBoundingClientRect();
-      console.log(
-        `object ${index}: ${objPos.x} ${objPos.y}
-         playerX: ${playerBoundingBox.x} playerY : ${playerBoundingBox.y}`
-      );
+
       if (
-        Math.abs(playerBoundingBox.x - objPos.x) <= 32 &&
-        Math.abs(playerBoundingBox.y - objPos.y) <= 32
+        Math.abs(playerBoundingBox.x - objPos.x) <= 64 &&
+        Math.abs(playerBoundingBox.y - objPos.y) <= 64
       ) {
-        obj.style.backgroundColor = 'red';
+        if (obj.style.display == 'none') {
+
+        } else if (obj.dataset.type == 'food') {
+          addLife();
+          obj.style.display = 'none';
+        } else if (obj.dataset.type == 'tool') {
+          addToInvetory(obj);
+          obj.style.display = 'none';
+        }
       } else {
-        obj.style.backgroundColor = '';
+        //obj.style.backgroundColor = '';
       }
     });
 
-    //console.log(document.querySelector('#obj').getBoundingClientRect());
   };
-  document.querySelector('#down').addEventListener('click', () => {
-    move('bottom');
+
+  function step(timestamp) {
+    if (timestamp - lastTimestamp > 50) {
+      lastTimestamp = timestamp;
+      //console.log('time...')
+      if (movement) {
+        move(movement);
+        //console.log(movement)
+      }
+    }
+
+    window.requestAnimationFrame(step);
+
+  }
+
+  window.requestAnimationFrame(step);
+  document.querySelector('#down').addEventListener('mousedown', () => {
+    //move('bottom');
+    movement = 'bottom';
   });
 
-  document.querySelector('#up').addEventListener('click', () => {
-    move('top');
+  window.addEventListener('mouseup', () => {
+    //move('bottom');
+    movement = null;
   });
 
-  document.querySelector('#left').addEventListener('click', () => {
-    move('left');
+  document.querySelector('#up').addEventListener('mousedown', () => {
+    movement = 'top';
   });
 
-  document.querySelector('#right').addEventListener('click', () => {
-    move('right');
+  document.querySelector('#left').addEventListener('mousedown', () => {
+    movement = 'left';
   });
 
-  document.addEventListener('keyup', function(event) {
+  document.querySelector('#right').addEventListener('mousedown', () => {
+    movement = 'right';
+  });
+
+
+  window.addEventListener('keyup', function(event) {
+    movement = null;
+  })
+
+  window.addEventListener('keydown', function(event) {
     if (event.keyCode == 38) {
-      move('top');
+      movement = 'top';
     } else if (event.keyCode == 40) {
-      move('bottom');
+      movement = 'bottom';
     } else if (event.keyCode == 39) {
-      move('right');
+      movement = 'right';
     } else if (event.keyCode == 37) {
-      move('left');
+      movement = 'left';
     }
   });
 });
+
+
+var addToInvetory = function(element) {
+  var newInventoryElement = element.children[0].cloneNode(true);
+
+  document.querySelector('#inventory').appendChild(newInventoryElement)
+}
 
 function addLife() {
   var life = document.getElementById('life');
   var selectTool = document.getElementsByClassName('count')[0];
   var numLife = life.childNodes;
-  var incrementCount = parseInt(selectTool.innerHTML) + 1;
-  selectTool.innerHTML = incrementCount;
 
   var newLife = document.createElement('span');
   if (numLife.length <= 6) {
