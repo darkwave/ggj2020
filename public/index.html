@@ -1,103 +1,170 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>GGJ 2020</title>
+    <script src="game-engine.js" charset="utf-8"></script>
+    <style media="screen">
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-<head>
-  <meta charset="utf-8" />
-  <title>GGJ 2020</title>
-  <script src="game-engine.js" charset="utf-8"></script>
-  <style media="screen">
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+      .layer {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
 
-    .layer {
-      position: absolute;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-    }
+      #player {
+        position: absolute;
+      }
 
-    #player {
-      position: absolute;
-    }
+      #control {
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.4);
+        width: fit-content;
+        position: absolute;
+        bottom: 50px;
+        left: 50px;
 
-    #control {
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.4);
-      width: fit-content;
-      position: absolute;
-      bottom: 50px;
-      left: 50px;
+        display: grid;
+        grid-template-columns: repeat(3, 64px);
+        grid-template-rows: repeat(3, 64px);
 
-      display: grid;
-      grid-template-columns: repeat(3, 64px);
-      grid-template-rows: repeat(3, 64px);
+        grid-template-areas:
+          '. up .'
+          'left . right'
+          '. down .';
+      }
 
-      grid-template-areas:
-        ". up ."
-        "left . right"
-        ". down .";
-    }
+      #control img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
 
-    #control img {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
+      #up {
+        grid-area: up;
+      }
 
-    #up {
-      grid-area: up;
-    }
+      #right {
+        grid-area: right;
+        transform: rotate(90deg);
+      }
 
-    #right {
-      grid-area: right;
-      transform: rotate(90deg);
-    }
+      #down {
+        grid-area: down;
+        transform: rotate(180deg);
+      }
 
-    #down {
-      grid-area: down;
-      transform: rotate(180deg);
-    }
+      #left {
+        grid-area: left;
+        transform: rotate(270deg);
+      }
 
-    #left {
-      grid-area: left;
-      transform: rotate(270deg);
-    }
+      .objs {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        width: 64px;
+        height: 64px;
+        border: 1px solid magenta;
+        border-radius: 50%;
+      }
 
-    .objs {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      width: 64px;
-      height: 64px;
-      border: 1px solid magenta;
-      border-radius: 50%;
-    }
-  </style>
-</head>
+      .life {
+        position: fixed;
+      }
+      .lifeBar {
+        display: inline-block;
+        border: 0.5px solid black;
+        width: 10px;
+        height: 30px;
+      }
+      .R {
+        background-color: red;
+      }
+      .LG {
+        background-color: #80eec5;
+      }
+      .G {
+        background-color: #66ff00;
+      }
+      .collector {
+        position: absolute;
+        margin-top: 180px;
 
-<body>
-  <div class="layer" style="background-color: #338">
-    <div id="background" style="position: absolute">
-      <img src="assets/island.svg" alt="" />
-      <div class="objs" style="top: 0px; left: 300px;"></div>
-      <div class="objs" style="top: 200px; left: 100px;"></div>
+        width: fit-content;
+      }
+
+      .selectTool {
+        display: list-item;
+        padding: 50% 0 50% 0;
+        width: 50px;
+        height: 40px;
+        background-color: rgb(255, 253, 105);
+      }
+      .count {
+        margin-left: 10px;
+        border: 0.5px solid grey;
+        background-color: grey;
+        color: white;
+      }
+      #food {
+        text-shadow: hotpink;
+      }
+      #clock {
+        float: inline-end;
+        color: #66ff99;
+        font-size: 56px;
+        text-align: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="layer" style="background-color: #338">
+      <div id="background" style="position: absolute">
+        <img src="assets/island.svg" alt="" />
+        <div class="objs" style="top: 0px; left: 300px;"></div>
+        <div class="objs" style="top: 200px; left: 100px;"></div>
+      </div>
     </div>
-  </div>
-  <div class="layer" id="player_layer">
-    <div id="player" style="transform: translate(-50%, -50%); left: 50%; top: 50%">
-      <img src="assets/adventurer_stand.png" alt="" />
+    <div class="layer" id="player_layer">
+      <div
+        id="player"
+        style="transform: translate(-50%, -50%); left: 50%; top: 50%"
+      >
+        <img src="assets/adventurer_stand.png" alt="" />
+      </div>
     </div>
-  </div>
-  <div class="layer">
-    <div id="control">
-      <img src="assets/arrow.svg" id="up" />
-      <img src="assets/arrow.svg" id="right" />
-      <img src="assets/arrow.svg" id="down" />
-      <img src="assets/arrow.svg" id="left" />
+    <div class="layer">
+      <div id="control">
+        <img src="assets/arrow.svg" id="up" />
+        <img src="assets/arrow.svg" id="right" />
+        <img src="assets/arrow.svg" id="down" />
+        <img src="assets/arrow.svg" id="left" />
+      </div>
     </div>
-  </div>
-</body>
-
+    <div class="life" id="life">
+      <!-- <span class="lifeBar R  "></span> -->
+    </div>
+    <div class="collector">
+      <div class="selectTool"></div>
+      <div class="selectTool"></div>
+      <div class="selectTool"></div>
+      <div class="selectTool"></div>
+      <div class="selectTool"></div>
+      <div class="selectTool"></div>
+      <div class="selectTool"></div>
+      <div class="selectTool" id="food" onclick="addLife()">
+        food<span class="count">0</span>
+      </div>
+    </div>
+    <div id="clock"></div>
+  </body>
 </html>
