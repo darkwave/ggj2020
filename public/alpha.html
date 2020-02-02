@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" href="main.css">
+  <script src="game.js" charset="utf-8"></script>
+</head>
+
+<body>
+  <!-- LEVEL LAYER -->
+  <div id="level" class="layer">
+    <div id="background">
+      <img src="assets/island.svg" alt="" />
+      <div class="objs" data-type="tool" oncollision="pickTool" data-coords="top: 0px; left: 300px;">
+        <img src="assets/tool0.svg" alt="" />
+      </div>
+      <div class="objs" oncollision="pickFood" data-type="food" data-coords="top: 200px; left: 800px;">
+        <img src="assets/apple.png" alt="" />
+      </div>
+      <div class="objs" data-type="food" data-coords="top: 50px; left: 400px;">
+        <img src="assets/banana.png" alt="" />
+      </div>
+      <div class="objs" data-type="tool" data-coords="top: 200px; left: 100px;">
+        <img src="assets/tool1.svg" alt="" />
+      </div>
+      <div class="objs" data-type="tool" data-coords="top: 800px; left: 500px;">
+        <img src="assets/tool2.svg" alt="" />
+      </div>
+      <div class="objs" oncollision="die" data-type="enemy" data-coords="top: 550px; left: 450px;">
+        <img src="assets/zombie.png" alt="" />
+      </div>
+    </div>
+  </div>
+  <!-- PLAYER LAYER -->
+  <div id="player_layer" class="layer">
+    <div id="player">
+      <img src="assets/adventurer_stand.png" alt="" />
+    </div>
+  </div>
+  <!-- UI LAYER -->
+  <div id="ui" class="layer">
+    <div id="day-night">
+      <div id="sun">
+        <img src="assets/sun.svg" alt="" />
+      </div>
+      <div id="moon" style="display: none;">
+        <img src="assets/moon.png" alt="" />
+      </div>
+    </div>
+    <div id="control">
+      <img src="assets/arrow.svg" id="up" />
+      <img src="assets/arrow.svg" id="right" />
+      <img src="assets/arrow.svg" id="down" />
+      <img src="assets/arrow.svg" id="left" />
+    </div>
+
+    <div id="life">
+      <span class="lifeBar R"></span>
+      <span class="lifeBar R"></span>
+      <span class="lifeBar R"></span>
+    </div>
+
+    <div id="inventory">
+    </div>
+  </div>
+
+  <!-- MAIN MENU -->
+  <div id="main-menu" class="layer">
+    <div class="modal">
+      Let's start
+      <button type="button" name="button" onclick="changeState(GAME_START);">START</button>
+    </div>
+  </div>
+  <!-- GAME OVER SCREEN -->
+  <div id="gameover-screen" class="layer" style="display: none">
+    <div class="modal">
+      GAME OVER
+      <button type="button" name="button" onclick="changeState(GAME_START);">RESTART</button>
+    </div>
+  </div>
+  <!-- WIN SCREEN -->
+  <div id="win-screen" class="layer" style="display: none">
+
+  </div>
+
+</body>
+
+</html>
