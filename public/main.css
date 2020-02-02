@@ -33,6 +33,10 @@
   position: absolute;
 }
 
+.night {
+  filter: brightness(.3);
+}
+
 #level {
   background-color: #338
 }

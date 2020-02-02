@@ -2,6 +2,9 @@ var lastTimestamp = 0;
 var movement = null;
 var level = null;
 var playerElement = null;
+var lastDayNightTransitionDelay = 60000;
+var movementDelay = 50;
+var lifeBarDelay = 10000;
 const MAIN_MENU = -1;
 const GAME_START = 0;
 const GAME_RUNNING = 1;
@@ -20,6 +23,13 @@ var pickFood = function(obj) {
 
 var pickTool = function(obj) {
   obj.style.display = 'none';
+
+  var inventoryElement = document.querySelector('#inventory');
+  var newInventoryElement = obj.children[0].cloneNode(true);
+  inventoryElement.appendChild(newInventoryElement);
+
+  if (document.querySelectorAll(".tool").length == inventoryElement.children.length)
+    changeState(GAME_WIN);
 }
 
 var die = function() {
@@ -44,7 +54,7 @@ var changeState = function(newState) {
     document.querySelector('#main-menu').style.display = 'none';
     document.querySelector('#gameover-screen').style.display = 'none';
     document.querySelector('#win-screen').style.display = 'none';
-    //TODO reset the level objects
+
     level.style = '';
     var objects = document.querySelectorAll('.objs');
     objects.forEach(obj => {
@@ -53,6 +63,10 @@ var changeState = function(newState) {
         obj.style = obj.dataset.coords;
       }
     });
+    // Reset inventory
+    var inventoryElement = document.querySelector('#inventory');
+    inventoryElement.innerHTML = '';
+
     var lifebarElement = document.querySelector('#life');
     lifebarElement.innerHTML = '';
     for (let i = 0; i < 3; i++)
@@ -63,7 +77,7 @@ var changeState = function(newState) {
   } else if (newState == GAME_OVER) {
     document.querySelector('#gameover-screen').style.display = 'flex';
   } else if (newState == GAME_WIN) {
-    document.querySelector('#win-screen').style.display = 'block';
+    document.querySelector('#win-screen').style.display = 'flex';
   }
 
   state = newState;
@@ -99,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   };
   var lastLifeTimestamp = 0;
+  var lastDayNightTransitionTimestamp = 0;
 
   function step(timestamp) {
 
@@ -106,12 +121,19 @@ document.addEventListener("DOMContentLoaded", function() {
       window.requestAnimationFrame(step);
       return;
     }
-    if (timestamp - lastLifeTimestamp > 10000) {
+
+    if (timestamp - lastDayNightTransitionTimestamp > lastDayNightTransitionDelay) {
+      lastDayNightTransitionTimestamp = timestamp;
+      level.classList.toggle('night');
+      player.classList.toggle('night');
+    }
+
+    if (timestamp - lastLifeTimestamp > lifeBarDelay) {
       lastLifeTimestamp = timestamp;
       removeLife();
     }
 
-    if (timestamp - lastTimestamp > 50) {
+    if (timestamp - lastTimestamp > movementDelay) {
       lastTimestamp = timestamp;
       if (movement) {
         move(movement);

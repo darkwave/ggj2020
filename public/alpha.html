@@ -13,7 +13,7 @@
   <div id="level" class="layer">
     <div id="background">
       <img src="assets/island.svg" alt="" />
-      <div class="objs" data-type="tool" oncollision="pickTool" data-coords="top: 0px; left: 300px;">
+      <div class="objs tool" oncollision="pickTool" data-coords="top: 0px; left: 300px;">
         <img src="assets/tool0.svg" alt="" />
       </div>
       <div class="objs" oncollision="pickFood" data-type="food" data-coords="top: 200px; left: 800px;">
@@ -22,10 +22,10 @@
       <div class="objs" data-type="food" data-coords="top: 50px; left: 400px;">
         <img src="assets/banana.png" alt="" />
       </div>
-      <div class="objs" data-type="tool" data-coords="top: 200px; left: 100px;">
+      <div class="objs tool" oncollision="pickTool" data-coords="top: 200px; left: 100px;">
         <img src="assets/tool1.svg" alt="" />
       </div>
-      <div class="objs" data-type="tool" data-coords="top: 800px; left: 500px;">
+      <div class="objs tool" oncollision="pickTool" data-coords="top: 800px; left: 500px;">
         <img src="assets/tool2.svg" alt="" />
       </div>
       <div class="objs" oncollision="die" data-type="enemy" data-coords="top: 550px; left: 450px;">
@@ -41,14 +41,14 @@
   </div>
   <!-- UI LAYER -->
   <div id="ui" class="layer">
-    <div id="day-night">
+    <!-- <div id="day-night">
       <div id="sun">
         <img src="assets/sun.svg" alt="" />
       </div>
       <div id="moon" style="display: none;">
         <img src="assets/moon.png" alt="" />
       </div>
-    </div>
+    </div> -->
     <div id="control">
       <img src="assets/arrow.svg" id="up" />
       <img src="assets/arrow.svg" id="right" />
@@ -80,7 +80,10 @@
   </div>
   <!-- WIN SCREEN -->
   <div id="win-screen" class="layer" style="display: none">
-
+    <div class="modal">
+      YOU CAN NOW REPAIR THE BOAT!!!
+      <button type="button" name="button" onclick="changeState(GAME_START);">PLAY AGAIN</button>
+    </div>
   </div>
 
 </body>
