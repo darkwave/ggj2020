@@ -18,6 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
   var playerElement = document.querySelector('#player');
 
   var move = function(direction) {
+    // console.log(isGameOver);
+    // if (!isGameOver) {
+    // } else {
+    //   return;
+    // }
     var islandBoundingBox = island.getBoundingClientRect();
     var playerBoundingBox = playerElement.getBoundingClientRect();
     var increment = direction == 'bottom' || direction == 'right' ? -1 : 1;
@@ -35,7 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
         Math.abs(playerBoundingBox.x - objPos.x) <= 64 &&
         Math.abs(playerBoundingBox.y - objPos.y) <= 64
       ) {
-        if (obj.style.display == 'none') {} else if (obj.dataset.type == 'food') {
+        if (obj.style.display == 'none') {
+        } else if (obj.dataset.type == 'food') {
           addLife();
           obj.style.display = 'none';
         } else if (obj.dataset.type == 'tool') {
@@ -51,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   };
-
   function step(timestamp) {
     if (timestamp - lastTimestamp > 50) {
       lastTimestamp = timestamp;
@@ -69,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
         isDay = !isDay;
         changeDaylight(isDay);
       }
-      console.log(dailyCounter);
+      // console.log(dailyCounter);
     }
 
     window.requestAnimationFrame(step);
@@ -121,10 +126,9 @@ document.addEventListener('DOMContentLoaded', function() {
     reduceLife();
     if (countDown.innerHTML == 0) {
       clearInterval(countDownLife);
-      movement = null;
-
     }
-  }, 5000);
+    gameOverModal = true;
+  }, 2000);
 
   var addToInvetory = function(element) {
     var newInventoryElement = element.children[0].cloneNode(true);
@@ -139,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function addLife() {
     var newLife = document.createElement('span');
-    console.log(numLife);
+    // console.log(numLife);
     if (numLife.length <= 6) {
       newLife.setAttribute('class', 'lifeBar R ');
       newLife.style.marginLeft = '2px';
@@ -153,14 +157,14 @@ document.addEventListener('DOMContentLoaded', function() {
       countDown.innerHTML = +countDown.innerHTML + 1;
     }
 
-    console.log(life.children);
+    //console.log(life.children);
     if (life.children.length < 15) life.appendChild(newLife);
   }
 
   function reduceLife() {
     var bars = document.getElementsByClassName('lifeBar');
     var masi = bars[bars.length - 1];
-    console.log(bars[bars.length - 1]);
+    //console.log(bars[bars.length - 1]);
     masi.remove();
   }
 });
