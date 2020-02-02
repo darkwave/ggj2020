@@ -17,9 +17,12 @@ document.addEventListener("DOMContentLoaded", function() {
   var island = document.querySelector("#background");
   var playerElement = document.querySelector("#player");
 
-  var playerLayer = document.querySelector("#player_layer");
-
   var move = function(direction) {
+    // console.log(isGameOver);
+    // if (!isGameOver) {
+    // } else {
+    //   return;
+    // }
     var islandBoundingBox = island.getBoundingClientRect();
     var playerBoundingBox = playerElement.getBoundingClientRect();
     var increment = direction == "bottom" || direction == "right" ? -1 : 1;
@@ -46,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function() {
           obj.style.display = "none";
         } else if (obj.dataset.type == "enemy") {
           document.querySelector("#main-menu").style.display = "block";
-          document.querySelector("#controller").style.backgroundColor =
+          document.querySelector("#controller-layer").style.backgroundColor =
             "rgba(0,0,0,0.8)";
           obj.style.display = "none";
         }
@@ -55,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   };
-
   function step(timestamp) {
     if (timestamp - lastTimestamp > 50) {
       lastTimestamp = timestamp;
@@ -73,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function() {
         isDay = !isDay;
         changeDaylight(isDay);
       }
-      console.log(dailyCounter);
+      // console.log(dailyCounter);
     }
 
     window.requestAnimationFrame(step);
@@ -118,40 +120,65 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
+  var countDown = document.getElementById("count");
+
+  var countDownLife = setInterval(function count() {
+    countDown.innerHTML -= 1;
+    reduceLife();
+    if (countDown.innerHTML == 0) {
+      clearInterval(countDownLife);
+    }
+    gameOverModal = true;
+  }, 2000);
+
   var addToInvetory = function(element) {
     var newInventoryElement = element.children[0].cloneNode(true);
+    newInventoryElement.style.width = "30px";
+    newInventoryElement.style.border = ".5px solid gray";
 
     document.querySelector("#inventory").appendChild(newInventoryElement);
   };
+  var life = document.getElementById("life");
+  var message = document.querySelector("#message");
+  var numLife = life.childNodes;
 
   function addLife() {
-    var life = document.getElementById("life");
-    var selectTool = document.getElementsByClassName("count")[0];
-    var numLife = life.childNodes;
-
     var newLife = document.createElement("span");
+    // console.log(numLife);
     if (numLife.length <= 6) {
       newLife.setAttribute("class", "lifeBar R ");
-    } else if (numLife.length > 6 && numLife.length < 12) {
-      newLife.setAttribute("class", "lifeBar LG ");
+      newLife.style.marginLeft = "2px";
+      var countDown = document.getElementById("count");
+      countDown.innerHTML = +countDown.innerHTML + 1;
     } else {
-      newLife.setAttribute("class", "lifeBar G ");
+      newLife.setAttribute("class", "lifeBar LG ");
+      newLife.style.marginLeft = "2px";
+      message.style.display = "none";
+      var countDown = document.getElementById("count");
+      countDown.innerHTML = +countDown.innerHTML + 1;
     }
 
+    //console.log(life.children);
     if (life.children.length < 15) life.appendChild(newLife);
   }
 
   const changeDaylight = dayLight => {
     if (dayLight) {
-      document.querySelector("#controller").style.backdropFilter =
+      document.querySelector("#controller-layer").style.backdropFilter =
         "brightness(1)";
       document.querySelector("#sun").style.display = "block";
       document.querySelector("#moon").style.display = "none";
     } else {
-      document.querySelector("#controller").style.backdropFilter =
+      document.querySelector("#controller-layer").style.backdropFilter =
         "brightness(.3)";
       document.querySelector("#moon").style.display = "block";
       document.querySelector("#sun").style.display = "none";
     }
   };
+  function reduceLife() {
+    var bars = document.getElementsByClassName("lifeBar");
+    var masi = bars[bars.length - 1];
+    //console.log(bars[bars.length - 1]);
+    masi.remove();
+  }
 });
