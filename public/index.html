@@ -1,193 +1,221 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>GGJ 2020</title>
+    <script src="game-engine.js" charset="utf-8"></script>
+    <style media="screen">
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-<head>
-  <meta charset="utf-8" />
-  <title>GGJ 2020</title>
-  <script src="game-engine.js" charset="utf-8"></script>
-  <style media="screen">
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+      .layer {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
 
-    .layer {
-      position: absolute;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-    }
+      #main-menu {
+        width: 30vw;
+        height: 20vh;
+        backdrop-filter: brightness(0.3) blur(4px);
+        background-color: antiquewhite;
+        margin: auto;
+        text-align: center;
+      }
 
-    #player {
-      position: absolute;
-    }
+      #main-menu h3 {
+      }
 
-    #control {
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.4);
-      width: fit-content;
-      position: absolute;
-      bottom: 50px;
-      left: 50px;
+      #player {
+        position: absolute;
+      }
 
-      display: grid;
-      grid-template-columns: repeat(3, 64px);
-      grid-template-rows: repeat(3, 64px);
+      #control {
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.4);
+        width: fit-content;
+        position: absolute;
+        bottom: 50px;
+        left: 50px;
 
-      grid-template-areas:
-        '. up .'
-        'left . right'
-        '. down .';
-    }
+        display: grid;
+        grid-template-columns: repeat(3, 64px);
+        grid-template-rows: repeat(3, 64px);
 
-    #control img {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
+        grid-template-areas:
+          ". up ."
+          "left . right"
+          ". down .";
+      }
 
-    #up {
-      grid-area: up;
-    }
+      #control img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
 
-    #right {
-      grid-area: right;
-      transform: rotate(90deg);
-    }
+      #up {
+        grid-area: up;
+      }
 
-    #down {
-      grid-area: down;
-      transform: rotate(180deg);
-    }
+      #right {
+        grid-area: right;
+        transform: rotate(90deg);
+      }
 
-    #left {
-      grid-area: left;
-      transform: rotate(270deg);
-    }
+      #down {
+        grid-area: down;
+        transform: rotate(180deg);
+      }
 
-    .objs {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      width: 64px;
-      height: 64px;
-      border: 1px solid magenta;
-      border-radius: 50%;
-    }
+      #left {
+        grid-area: left;
+        transform: rotate(270deg);
+      }
 
-    .life {
-      position: fixed;
-    }
+      .objs {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        width: 64px;
+        height: 64px;
+        border: 1px solid magenta;
+        border-radius: 50%;
+      }
 
-    .lifeBar {
-      display: inline-block;
-      border: 0.5px solid black;
-      width: 10px;
-      height: 30px;
-    }
+      .life {
+        position: fixed;
+      }
 
-    .R {
-      background-color: red;
-    }
+      .lifeBar {
+        display: inline-block;
+        border: 0.5px solid black;
+        width: 10px;
+        height: 30px;
+      }
 
-    .LG {
-      background-color: #80eec5;
-    }
+      .R {
+        background-color: red;
+      }
 
-    .G {
-      background-color: #66ff00;
-    }
+      .LG {
+        background-color: #80eec5;
+      }
 
-    #inventory {
-      position: absolute;
-      top: 180px;
-      left: 30px;
-      display: flex;
-      width: fit-content;
-      flex-direction: column;
-    }
+      .G {
+        background-color: #66ff00;
+      }
 
-    .selectTool {
-      display: list-item;
-      padding: 50% 0 50% 0;
-      width: 50px;
-      height: 40px;
-      background-color: rgb(255, 253, 105);
-    }
+      #inventory {
+        position: absolute;
+        top: 180px;
+        left: 30px;
+        display: flex;
+        width: fit-content;
+        flex-direction: column;
+      }
 
-    .count {
-      margin-left: 10px;
-      border: 0.5px solid grey;
-      background-color: grey;
-      color: white;
-    }
+      .selectTool {
+        display: list-item;
+        padding: 50% 0 50% 0;
+        width: 50px;
+        height: 40px;
+        background-color: rgb(255, 253, 105);
+      }
 
-    #food {
-      text-shadow: hotpink;
-    }
+      .count {
+        margin-left: 10px;
+        border: 0.5px solid grey;
+        background-color: grey;
+        color: white;
+      }
 
-    #clock {
-      float: inline-end;
-      color: #66ff99;
-      font-size: 56px;
-      text-align: center;
-      padding-top: 40px;
-      padding-bottom: 40px;
-    }
+      #food {
+        text-shadow: hotpink;
+      }
 
-    .objs img {
-      display: block;
-      width: 100%;
+      #clock {
+        float: inline-end;
+        color: #66ff99;
+        font-size: 56px;
+        text-align: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+      }
 
-    }
-  </style>
-</head>
+      .objs img {
+        display: block;
+        width: 100%;
+      }
+    </style>
+  </head>
 
-<body>
-  <div class="layer" style="background-color: #338">
-    <div id="background" style="position: absolute">
-      <img src="assets/island.svg" alt="" />
-      <div class="objs" data-type="tool" style="top: 0px; left: 300px;">
-        <img src="assets/tool0.svg" alt="">
+  <body>
+    <div class="layer" style="background-color: #338">
+      <div id="background" style="position: absolute">
+        <img src="assets/island.svg" alt="" />
+        <div class="objs" data-type="tool" style="top: 0px; left: 300px;">
+          <img src="assets/tool0.svg" alt="" />
+        </div>
+        <div class="objs" data-type="food" style="top: 200px; left: 800px;">
+          <img src="assets/apple.png" alt="" />
+        </div>
+        <div class="objs" data-type="food" style="top: 50px; left: 400px;">
+          <img src="assets/banana.png" alt="" />
+        </div>
+        <div class="objs" data-type="tool" style="top: 200px; left: 100px;">
+          <img src="assets/tool1.svg" alt="" />
+        </div>
+        <div class="objs" data-type="tool" style="top: 800px; left: 500px;">
+          <img src="assets/tool2.svg" alt="" />
+        </div>
+        <div class="objs" data-type="enemy" style="top: 550px; left: 450px;">
+          <img src="assets/zombie.png" alt="" />
+        </div>
       </div>
-      <div class="objs" data-type="food" style="top: 200px; left: 800px;">
-        <img src="assets/apple.png" alt="">
-      </div>
-      <div class="objs" data-type="food" style="top: 50px; left: 400px;">
-        <img src="assets/banana.png" alt="">
-      </div>
-      <div class="objs" data-type="tool" style="top: 200px; left: 100px;">
-        <img src="assets/tool1.svg" alt="">
-      </div>
-      <div class="objs" data-type="tool" style="top: 800px; left: 500px;">
-        <img src="assets/tool2.svg" alt="">
-      </div>
-      <div class="objs" data-type="enemy" style="top: 550px; left: 450px;">
-        <img src="assets/zombie.png" alt="">
-      </div>
-
     </div>
-  </div>
-  <div class="layer" id="player_layer">
-    <div id="player" style="transform: translate(-50%, -50%); left: 50%; top: 50%">
-      <img src="assets/adventurer_stand.png" alt="" />
+    <div class="layer" id="player_layer">
+      <div
+        id="player"
+        style="transform: translate(-50%, -50%); left: 50%; top: 50%"
+      >
+        <img src="assets/adventurer_stand.png" alt="" />
+      </div>
     </div>
-  </div>
-  <div class="layer" id="controller">
-    <div id="control">
-      <img src="assets/arrow.svg" id="up" />
-      <img src="assets/arrow.svg" id="right" />
-      <img src="assets/arrow.svg" id="down" />
-      <img src="assets/arrow.svg" id="left" />
+    <div class="layer" id="controller">
+      <div
+        id="sun"
+        class="objs"
+        data-type="environment"
+        style="top: 40px; right: 20px;"
+      >
+        <img src="assets/sun.svg" alt="" />
+      </div>
+      <div
+        id="moon"
+        class="objs"
+        data-type="environment"
+        style="top: 40px; right: 20px; display: none;"
+      >
+        <img src="assets/moon.png" alt="" />
+      </div>
+      <div id="control">
+        <img src="assets/arrow.svg" id="up" />
+        <img src="assets/arrow.svg" id="right" />
+        <img src="assets/arrow.svg" id="down" />
+        <img src="assets/arrow.svg" id="left" />
+      </div>
+      <div class="life" id="life">
+        <!-- <span class="lifeBar R  "></span> -->
+      </div>
+      <div id="inventory"></div>
+      <div id="clock"></div>
+      <div id="main-menu" style="display: none;">
+        <h3>GAME OVER!</h3>
+      </div>
     </div>
-    <div class="life" id="life">
-      <!-- <span class="lifeBar R  "></span> -->
-    </div>
-    <div id="inventory">
-    </div>
-    <div id="clock"></div>
-  </div>
-
-</body>
-
+  </body>
 </html>
