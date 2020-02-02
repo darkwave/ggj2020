@@ -116,25 +116,14 @@
   left: 20px;
 }
 
-.lifeBar {
+#life span {
   display: inline-block;
   border: 0.5px solid black;
   width: 10px;
   height: 30px;
-}
-
-.R {
   background-color: red;
   padding: 0em;
-  margin: 0em;
-}
-
-.LG {
-  background-color: #80eec5;
-}
-
-.G {
-  background-color: #66ff00;
+  margin: 0em 4px;
 }
 
 #day-night {

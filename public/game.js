@@ -12,6 +12,10 @@ var state = MAIN_MENU;
 
 var pickFood = function(obj) {
   obj.style.display = 'none';
+
+  var lifebarElement = document.querySelector('#life');
+  var newLife = document.createElement("span");
+  if (lifebarElement.children.length < 15) lifebarElement.appendChild(newLife);
 }
 
 var pickTool = function(obj) {
@@ -22,6 +26,15 @@ var die = function() {
   changeState(GAME_OVER);
 }
 
+var removeLife = function() {
+
+  var lifebarElement = document.querySelector('#life');
+  if (lifebarElement.children.length > 0) {
+    lifebarElement.children[lifebarElement.children.length - 1].remove();
+  } else {
+    die();
+  }
+}
 
 var changeState = function(newState) {
   if (newState == MAIN_MENU) {
@@ -40,7 +53,12 @@ var changeState = function(newState) {
         obj.style = obj.dataset.coords;
       }
     });
+    var lifebarElement = document.querySelector('#life');
+    lifebarElement.innerHTML = '';
+    for (let i = 0; i < 3; i++)
+      lifebarElement.appendChild(document.createElement("span"));
 
+    newState = GAME_RUNNING;
 
   } else if (newState == GAME_OVER) {
     document.querySelector('#gameover-screen').style.display = 'flex';
@@ -49,7 +67,7 @@ var changeState = function(newState) {
   }
 
   state = newState;
-
+  console.log(state);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -80,8 +98,19 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   };
+  var lastLifeTimestamp = 0;
 
   function step(timestamp) {
+
+    if (state != GAME_RUNNING) {
+      window.requestAnimationFrame(step);
+      return;
+    }
+    if (timestamp - lastLifeTimestamp > 10000) {
+      lastLifeTimestamp = timestamp;
+      removeLife();
+    }
+
     if (timestamp - lastTimestamp > 50) {
       lastTimestamp = timestamp;
       if (movement) {
